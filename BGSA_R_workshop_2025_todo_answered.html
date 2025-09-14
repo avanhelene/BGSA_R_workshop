@@ -1,0 +1,1786 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>BGSA_R_workshop_2025-09-13</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="BGSA_R_workshop_2025_todo_answered_files/libs/clipboard/clipboard.min.js"></script>
+<script src="BGSA_R_workshop_2025_todo_answered_files/libs/quarto-html/quarto.js"></script>
+<script src="BGSA_R_workshop_2025_todo_answered_files/libs/quarto-html/popper.min.js"></script>
+<script src="BGSA_R_workshop_2025_todo_answered_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="BGSA_R_workshop_2025_todo_answered_files/libs/quarto-html/anchor.min.js"></script>
+<link href="BGSA_R_workshop_2025_todo_answered_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="BGSA_R_workshop_2025_todo_answered_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="BGSA_R_workshop_2025_todo_answered_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="BGSA_R_workshop_2025_todo_answered_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="BGSA_R_workshop_2025_todo_answered_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">BGSA_R_workshop_2025-09-13</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.2     ✔ tibble    3.3.0
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+✔ purrr     1.0.4     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+</div>
+<section id="tidyverse-data-wrangling-with-cancer-incidence-and-population-demographic-data" class="level2">
+<h2 class="anchored" data-anchor-id="tidyverse-data-wrangling-with-cancer-incidence-and-population-demographic-data">Tidyverse data wrangling with cancer incidence and population demographic data</h2>
+<section id="in-this-section-we-will-use-functions-from-the-tidyverse-library-wrangle-population-level-cancer-and-demographic-data.-data-wrangling-refers-to-manipulating-and-reformatting-data." class="level3">
+<h3 class="anchored" data-anchor-id="in-this-section-we-will-use-functions-from-the-tidyverse-library-wrangle-population-level-cancer-and-demographic-data.-data-wrangling-refers-to-manipulating-and-reformatting-data.">In this section we will use functions from the tidyverse library “wrangle” population-level cancer and demographic data. Data wrangling refers to manipulating and reformatting data.</h3>
+<section id="data-from-httpsmcc-cri.shinyapps.iocif-data" class="level4">
+<h4 class="anchored" data-anchor-id="data-from-httpsmcc-cri.shinyapps.iocif-data">Data from: <a href="https://mcc-cri.shinyapps.io/cif-data" class="uri">https://mcc-cri.shinyapps.io/cif-data</a></h4>
+<p>Use the file.path function to create paths.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a text string with the path to the cancer incidence data</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>data_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"data"</span>, <span class="st">"us_cancer_incidence_county_09-04-2025.csv"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(data_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "data/us_cancer_incidence_county_09-04-2025.csv"</code></pre>
+</div>
+</div>
+<p>Use the file path we constructed to read in the table using read.csv. You can see that we retrieved a wide format table, where the “FIPS” and “County” fields serve as IDs for each. Each also has a field for each cancer type e.g.&nbsp;“All Site”, “Bladder”, “Brain &amp; ONS”, ect.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>us_cancer_incidence_county <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(data_path,</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">check.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(us_cancer_incidence_county))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  FIPS         County   State      Type                               RE    Sex
+1 1001 Autauga County Alabama Incidence                              All    All
+2 1001 Autauga County Alabama Incidence                              All Female
+3 1001 Autauga County Alabama Incidence                              All   Male
+4 1001 Autauga County Alabama Incidence American Indian/Alaska Native NH    All
+5 1001 Autauga County Alabama Incidence American Indian/Alaska Native NH Female
+6 1001 Autauga County Alabama Incidence American Indian/Alaska Native NH   Male
+  AYA (15-39 years) Alcohol-associated All Site All Site (18-49 years)
+1           94.8902           134.8711 459.6583               173.4742
+2          123.7479           180.6734 426.4733               221.9220
+3           64.8128            84.0777 508.6337               122.0667
+4                NA                 NA       NA                     NA
+5                NA                 NA       NA                     NA
+6                NA                 NA       NA                     NA
+  All Site (65+ years) Bladder Bladder (18-49 years) Bladder (65+ years)
+1             1880.084 15.2621                    NA             87.9906
+2             1505.317      NA                    NA                  NA
+3             2386.425 25.6987                    NA            160.3674
+4                   NA      NA                    NA                  NA
+5                   NA      NA                    NA                  NA
+6                   NA      NA                    NA                  NA
+  Brain &amp; ONS Brain &amp; ONS (18-49 years) Brain &amp; ONS (65+ years) Cervix
+1       5.916                        NA                      NA     NA
+2          NA                        NA                      NA     NA
+3          NA                        NA                      NA     NA
+4          NA                        NA                      NA     NA
+5          NA                        NA                      NA     NA
+6          NA                        NA                      NA     NA
+  Cervix (18-49 years) Cervix (21-65 years) Cervix (65+ years)
+1                   NA                   NA                 NA
+2                   NA                   NA                 NA
+3                   NA                   NA                 NA
+4                   NA                   NA                 NA
+5                   NA                   NA                 NA
+6                   NA                   NA                 NA
+  Cervix (Early Stage) Cervix (Late Stage) Colon &amp; Rectum
+1                   NA                  NA        41.9540
+2                   NA                  NA        39.4591
+3                   NA                  NA        45.6285
+4                   NA                  NA             NA
+5                   NA                  NA             NA
+6                   NA                  NA             NA
+  Colon &amp; Rectum (18-49 years) Colon &amp; Rectum (45-75 years)
+1                      16.4466                      81.8518
+2                           NA                      73.5568
+3                           NA                      89.7084
+4                           NA                           NA
+5                           NA                           NA
+6                           NA                           NA
+  Colon &amp; Rectum (65+ years) Colon &amp; Rectum (Early Stage)
+1                   177.5225                      15.0965
+2                   162.3594                      13.0590
+3                   202.4964                      17.5283
+4                         NA                           NA
+5                         NA                           NA
+6                         NA                           NA
+  Colon &amp; Rectum (Late Stage) Corpus Uteri &amp; Uterus, NOS
+1                     21.4683                    20.3138
+2                     20.9890                    20.3138
+3                     22.5108                         NA
+4                          NA                         NA
+5                          NA                         NA
+6                          NA                         NA
+  Corpus Uteri &amp; Uterus, NOS (18-49 years)
+1                                       NA
+2                                       NA
+3                                       NA
+4                                       NA
+5                                       NA
+6                                       NA
+  Corpus Uteri &amp; Uterus, NOS (65+ years) Esophagus Esophagus (18-49 years)
+1                                     NA    6.7185                      NA
+2                                     NA        NA                      NA
+3                                     NA    9.5300                      NA
+4                                     NA        NA                      NA
+5                                     NA        NA                      NA
+6                                     NA        NA                      NA
+  Esophagus (65+ years) Female Breast Female Breast (18-49 years)
+1               36.8918      124.8672                     62.3989
+2                    NA      124.8672                     62.3989
+3                    NA            NA                          NA
+4                    NA            NA                          NA
+5                    NA            NA                          NA
+6                    NA            NA                          NA
+  Female Breast (40-74 years) Female Breast (65+ years)
+1                     245.985                  382.4438
+2                     245.985                  382.4438
+3                          NA                        NA
+4                          NA                        NA
+5                          NA                        NA
+6                          NA                        NA
+  Female Breast (Early Stage) Female Breast (Late Stage) HPV-associated
+1                     78.6696                    41.5186        11.9348
+2                     78.6696                    41.5186        15.5777
+3                          NA                         NA         7.8928
+4                          NA                         NA             NA
+5                          NA                         NA             NA
+6                          NA                         NA             NA
+  Head and Neck Hematologic Malignancies Hodgkin Lymphoma
+1       24.1449                  44.4204               NA
+2       23.6260                  30.5602               NA
+3       26.1598                  62.4301               NA
+4            NA                       NA               NA
+5            NA                       NA               NA
+6            NA                       NA               NA
+  Hodgkin Lymphoma (18-49 years) Hodgkin Lymphoma (65+ years)
+1                             NA                           NA
+2                             NA                           NA
+3                             NA                           NA
+4                             NA                           NA
+5                             NA                           NA
+6                             NA                           NA
+  Kidney &amp; Renal Pelvis Kidney &amp; Renal Pelvis (18-49 years)
+1               20.1204                                  NA
+2               11.4440                                  NA
+3               29.4414                                  NA
+4                    NA                                  NA
+5                    NA                                  NA
+6                    NA                                  NA
+  Kidney &amp; Renal Pelvis (65+ years) Leukemia Leukemia (18-49 years)
+1                           61.0561  15.5868                     NA
+2                                NA  12.7013                     NA
+3                           83.3929  19.5002                     NA
+4                                NA       NA                     NA
+5                                NA       NA                     NA
+6                                NA       NA                     NA
+  Leukemia (65+ years) Liver &amp; IBD Liver &amp; IBD (18-49 years)
+1              67.5969      7.2661                        NA
+2                   NA          NA                        NA
+3              95.3588     11.0120                        NA
+4                   NA          NA                        NA
+5                   NA          NA                        NA
+6                   NA          NA                        NA
+  Liver &amp; IBD (65+ years) Lung &amp; Bronchus Lung &amp; Bronchus (18-49 years)
+1                 36.6144         62.4633                            NA
+2                      NA         56.3736                            NA
+3                      NA         70.7731                            NA
+4                      NA              NA                            NA
+5                      NA              NA                            NA
+6                      NA              NA                            NA
+  Lung &amp; Bronchus (50-80 years) Lung &amp; Bronchus (65+ years)
+1                      199.4958                    319.6382
+2                      170.9392                    275.5086
+3                      234.2599                    380.9893
+4                            NA                          NA
+5                            NA                          NA
+6                            NA                          NA
+  Lung &amp; Bronchus (Early Stage) Lung &amp; Bronchus (Late Stage)
+1                       14.9869                      41.6762
+2                       14.8230                      35.5661
+3                       15.9459                      49.6848
+4                            NA                           NA
+5                            NA                           NA
+6                            NA                           NA
+  Melanoma of the Skin Melanoma of the Skin (18-49 years)
+1              22.8855                            16.9107
+2              24.1056                                 NA
+3              23.2429                                 NA
+4                   NA                                 NA
+5                   NA                                 NA
+6                   NA                                 NA
+  Melanoma of the Skin (65+ years) Myeloma Myeloma (18-49 years)
+1                          63.9812  9.5101                    NA
+2                               NA      NA                    NA
+3                         103.6040 13.9125                    NA
+4                               NA      NA                    NA
+5                               NA      NA                    NA
+6                               NA      NA                    NA
+  Myeloma (65+ years) Neuroendocrine Tumors Non-Hodgkin Lymphoma
+1             44.0245               10.0673              15.8498
+2                  NA                9.5227              10.0924
+3                  NA               10.8471              23.6098
+4                  NA                    NA                   NA
+5                  NA                    NA                   NA
+6                  NA                    NA                   NA
+  Non-Hodgkin Lymphoma (18-49 years) Non-Hodgkin Lymphoma (65+ years)
+1                                 NA                          89.1058
+2                                 NA                               NA
+3                                 NA                         141.4318
+4                                 NA                               NA
+5                                 NA                               NA
+6                                 NA                               NA
+  Obesity-associated Oral Cavity &amp; Pharynx Oral Cavity &amp; Pharynx (18-49 years)
+1           176.5714               10.3504                                  NA
+2           221.8295                    NA                                  NA
+3           125.6003               16.2387                                  NA
+4                 NA                    NA                                  NA
+5                 NA                    NA                                  NA
+6                 NA                    NA                                  NA
+  Oral Cavity &amp; Pharynx (65+ years)   Ovary Ovary (18-49 years)
+1                                NA 13.9549                  NA
+2                                NA 13.9549                  NA
+3                                NA      NA                  NA
+4                                NA      NA                  NA
+5                                NA      NA                  NA
+6                                NA      NA                  NA
+  Ovary (65+ years) Pancreas Pancreas (18-49 years) Pancreas (65+ years)
+1                NA  14.7776                     NA              69.3483
+2                NA  14.3308                     NA              65.7642
+3                NA  15.2299                     NA                   NA
+4                NA       NA                     NA                   NA
+5                NA       NA                     NA                   NA
+6                NA       NA                     NA                   NA
+  Pediatric (0-14 years) Pediatric (0-19 years) Prostate Prostate (18-49 years)
+1                     NA                     NA 129.8768                     NA
+2                     NA                     NA       NA                     NA
+3                     NA                     NA 129.8768                     NA
+4                     NA                     NA       NA                     NA
+5                     NA                     NA       NA                     NA
+6                     NA                     NA       NA                     NA
+  Prostate (65+ years) Stomach Stomach (18-49 years) Stomach (65+ years)
+1              639.095  6.3646                    NA                  NA
+2                   NA      NA                    NA                  NA
+3              639.095      NA                    NA                  NA
+4                   NA      NA                    NA                  NA
+5                   NA      NA                    NA                  NA
+6                   NA      NA                    NA                  NA
+  Thyroid Thyroid (18-49 years) Thyroid (65+ years) Tobacco-associated
+1  9.6600                    NA                  NA           196.3504
+2 15.1733                    NA                  NA           164.4880
+3      NA                    NA                  NA           237.1356
+4      NA                    NA                  NA                 NA
+5      NA                    NA                  NA                 NA
+6      NA                    NA                  NA                 NA</code></pre>
+</div>
+</div>
+<p>We are also reading in population demographic counts for each county. We will save this table for later.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>data_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"data"</span>, <span class="st">"us_sociodemographics_county_09-04-2025.csv"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>us_sociodemographics_county <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(data_path,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">check.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Our cancer incidence table is in wide format, but we want long format. We used the pivot_longer function from tidyr package to convert us_cancer_incidence_county from wide to long format.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get columns that we will pivot to long format</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>columns <span class="ot">&lt;-</span> <span class="fu">colnames</span>(us_cancer_incidence_county) <span class="co"># Get all columns</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>columns <span class="ot">&lt;-</span> columns[<span class="sc">!</span>columns <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"FIPS"</span>, <span class="st">"County"</span>, <span class="st">"State"</span>, <span class="st">"Type"</span>, <span class="st">"RE"</span>, <span class="st">"Sex"</span>)] <span class="co"># Filter out columns that we are not pivoting to long format </span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Pivot the table to long format</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>us_cancer_incidence_county_long <span class="ot">&lt;-</span> us_cancer_incidence_county <span class="sc">|&gt;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span><span class="fu">c</span>(FIPS, </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>                                County, </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>                                State, </span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>                                Type, </span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>                                RE, </span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>                                Sex), <span class="co"># Specify which columns are serve as row IDs and are not pivoted to long format</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>                      <span class="at">names_to =</span> <span class="st">"cancer_site"</span>, <span class="co"># Store the old column names in the new "cancer_site' column</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>                      <span class="at">values_to =</span> <span class="st">"age_adjusted_rate"</span>) <span class="co"># Store the old column values in the new "age_adjusted_rate' column</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(us_cancer_incidence_county_long))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 8
+   FIPS County         State   Type    RE    Sex   cancer_site age_adjusted_rate
+  &lt;int&gt; &lt;chr&gt;          &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;                   &lt;dbl&gt;
+1  1001 Autauga County Alabama Incide… All   All   AYA (15-39…              94.9
+2  1001 Autauga County Alabama Incide… All   All   Alcohol-as…             135. 
+3  1001 Autauga County Alabama Incide… All   All   All Site                460. 
+4  1001 Autauga County Alabama Incide… All   All   All Site (…             173. 
+5  1001 Autauga County Alabama Incide… All   All   All Site (…            1880. 
+6  1001 Autauga County Alabama Incide… All   All   Bladder                  15.3</code></pre>
+</div>
+</div>
+<p>TODO: Pivot gene_expression_wide to long format, using tidyr::pivot_longer</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># example wide table</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>gene_expression_wide <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>GSM,        <span class="sc">~</span>GSE, <span class="sc">~</span><span class="st">`</span><span class="at">2</span><span class="st">`</span>,   <span class="sc">~</span><span class="st">`</span><span class="at">9</span><span class="st">`</span>,   <span class="sc">~</span><span class="st">`</span><span class="at">10</span><span class="st">`</span>,  <span class="sc">~</span><span class="st">`</span><span class="at">12</span><span class="st">`</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"GSM2804844"</span>,<span class="st">"GSE104645"</span>,    <span class="fl">0.79</span>,   <span class="fl">0.24</span>,  <span class="sc">-</span><span class="fl">0.52</span>,   <span class="fl">0.67</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"GSM2804845"</span>,<span class="st">"GSE104645"</span>,    <span class="fl">0.86</span>,   <span class="fl">0.47</span>,   <span class="fl">0.01</span>,  <span class="sc">-</span><span class="fl">0.03</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"GSM2804846"</span>,<span class="st">"GSE104645"</span>,    <span class="fl">1.07</span>,   <span class="fl">0.41</span>,  <span class="sc">-</span><span class="fl">0.72</span>,  <span class="sc">-</span><span class="fl">0.07</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>gene_expression_long <span class="ot">&lt;-</span> gene_expression_wide <span class="sc">%&gt;%</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="sc">-</span><span class="fu">c</span>(GSM, GSE),</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to  =</span> <span class="st">"entrez_gene_id"</span>,</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"gene_expression"</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The us_cancer_incidence_county_long table has some values in the “cancer_site” column that we are not interested in. Use the filter function from the dplyr library to remove rows with certain values in the “cancer_site” column.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get a vector of all values in "cancer_site" that end with ")"</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We want to remove "cancer_site" values with parentheses like "Bladder (18-49 years)"</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>cancer_site_values <span class="ot">&lt;-</span> <span class="fu">unique</span>(us_cancer_incidence_county_long<span class="sc">$</span>cancer_site) <span class="co"># Get all unique values in the "cancer_site" column</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>cancer_site_values_with_parentheses <span class="ot">&lt;-</span> cancer_site_values[<span class="fu">endsWith</span>(cancer_site_values, <span class="st">")"</span>)]</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">"We are removing rows with these values: '"</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>             <span class="fu">paste</span>(cancer_site_values_with_parentheses, <span class="at">collapse =</span> <span class="st">"', '"</span>),</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>             <span class="st">"'"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "We are removing rows with these values: 'AYA (15-39 years)', 'All Site (18-49 years)', 'All Site (65+ years)', 'Bladder (18-49 years)', 'Bladder (65+ years)', 'Brain &amp; ONS (18-49 years)', 'Brain &amp; ONS (65+ years)', 'Cervix (18-49 years)', 'Cervix (21-65 years)', 'Cervix (65+ years)', 'Cervix (Early Stage)', 'Cervix (Late Stage)', 'Colon &amp; Rectum (18-49 years)', 'Colon &amp; Rectum (45-75 years)', 'Colon &amp; Rectum (65+ years)', 'Colon &amp; Rectum (Early Stage)', 'Colon &amp; Rectum (Late Stage)', 'Corpus Uteri &amp; Uterus, NOS (18-49 years)', 'Corpus Uteri &amp; Uterus, NOS (65+ years)', 'Esophagus (18-49 years)', 'Esophagus (65+ years)', 'Female Breast (18-49 years)', 'Female Breast (40-74 years)', 'Female Breast (65+ years)', 'Female Breast (Early Stage)', 'Female Breast (Late Stage)', 'Hodgkin Lymphoma (18-49 years)', 'Hodgkin Lymphoma (65+ years)', 'Kidney &amp; Renal Pelvis (18-49 years)', 'Kidney &amp; Renal Pelvis (65+ years)', 'Leukemia (18-49 years)', 'Leukemia (65+ years)', 'Liver &amp; IBD (18-49 years)', 'Liver &amp; IBD (65+ years)', 'Lung &amp; Bronchus (18-49 years)', 'Lung &amp; Bronchus (50-80 years)', 'Lung &amp; Bronchus (65+ years)', 'Lung &amp; Bronchus (Early Stage)', 'Lung &amp; Bronchus (Late Stage)', 'Melanoma of the Skin (18-49 years)', 'Melanoma of the Skin (65+ years)', 'Myeloma (18-49 years)', 'Myeloma (65+ years)', 'Non-Hodgkin Lymphoma (18-49 years)', 'Non-Hodgkin Lymphoma (65+ years)', 'Oral Cavity &amp; Pharynx (18-49 years)', 'Oral Cavity &amp; Pharynx (65+ years)', 'Ovary (18-49 years)', 'Ovary (65+ years)', 'Pancreas (18-49 years)', 'Pancreas (65+ years)', 'Pediatric (0-14 years)', 'Pediatric (0-19 years)', 'Prostate (18-49 years)', 'Prostate (65+ years)', 'Stomach (18-49 years)', 'Stomach (65+ years)', 'Thyroid (18-49 years)', 'Thyroid (65+ years)'"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter out rows where "cancer_site" is in cancer_site_values_with_parentheses</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>us_cancer_incidence_county_long <span class="ot">&lt;-</span> us_cancer_incidence_county_long <span class="sc">|&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span>cancer_site <span class="sc">%in%</span> cancer_site_values_with_parentheses)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(us_cancer_incidence_county_long))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 8
+   FIPS County         State   Type    RE    Sex   cancer_site age_adjusted_rate
+  &lt;int&gt; &lt;chr&gt;          &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;                   &lt;dbl&gt;
+1  1001 Autauga County Alabama Incide… All   All   Alcohol-as…            135.  
+2  1001 Autauga County Alabama Incide… All   All   All Site               460.  
+3  1001 Autauga County Alabama Incide… All   All   Bladder                 15.3 
+4  1001 Autauga County Alabama Incide… All   All   Brain &amp; ONS              5.92
+5  1001 Autauga County Alabama Incide… All   All   Cervix                  NA   
+6  1001 Autauga County Alabama Incide… All   All   Colon &amp; Re…             42.0 </code></pre>
+</div>
+</div>
+<p>TODO: Filter gene_expression_wide to only include the following GSMs: “GSM2804844”, “GSM2804845.”</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># example wide table</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>gene_expression_wide <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>GSM,        <span class="sc">~</span>GSE, <span class="sc">~</span><span class="st">`</span><span class="at">2</span><span class="st">`</span>,   <span class="sc">~</span><span class="st">`</span><span class="at">9</span><span class="st">`</span>,   <span class="sc">~</span><span class="st">`</span><span class="at">10</span><span class="st">`</span>,  <span class="sc">~</span><span class="st">`</span><span class="at">12</span><span class="st">`</span>,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"GSM2804844"</span>,<span class="st">"GSE104645"</span>,    <span class="fl">0.79</span>,   <span class="fl">0.24</span>,  <span class="sc">-</span><span class="fl">0.52</span>,   <span class="fl">0.67</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"GSM2804845"</span>,<span class="st">"GSE104645"</span>,    <span class="fl">0.86</span>,   <span class="fl">0.47</span>,   <span class="fl">0.01</span>,  <span class="sc">-</span><span class="fl">0.03</span>,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"GSM2804846"</span>,<span class="st">"GSE104645"</span>,    <span class="fl">1.07</span>,   <span class="fl">0.41</span>,  <span class="sc">-</span><span class="fl">0.72</span>,  <span class="sc">-</span><span class="fl">0.07</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>gene_expression_wide_filt <span class="ot">&lt;-</span> gene_expression_wide <span class="sc">|&gt;</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(GSM <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"GSM2804844"</span>, <span class="st">"GSM2804845"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Since we are curious, lets count the number of people in each age group in each state using data from us_sociodemographics_county.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert age count fractions to counts by multiplying the fractions by the total population count for each county</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>us_sociodemographics_county_age <span class="ot">&lt;-</span> us_sociodemographics_county <span class="sc">|&gt;</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="st">`</span><span class="at">Under 18</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">Under 18</span><span class="st">`</span> <span class="sc">*</span> Total,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>                <span class="st">`</span><span class="at">18 to 64</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">18 to 64</span><span class="st">`</span> <span class="sc">*</span> Total,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>                <span class="st">`</span><span class="at">Over 64</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">Over 64</span><span class="st">`</span> <span class="sc">*</span> Total)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Use dplyr::group_by to specify the grouping columns</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Use dplyr::summarise to sum the counts in each state</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>us_sociodemographics_state_age_counts <span class="ot">&lt;-</span> us_sociodemographics_county_age <span class="sc">|&gt;</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(State) <span class="sc">|&gt;</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="st">`</span><span class="at">Under 18</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Under 18</span><span class="st">`</span>),</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>                   <span class="st">`</span><span class="at">18 to 64</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">18 to 64</span><span class="st">`</span>),</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>                   <span class="st">`</span><span class="at">Over 64</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Over 64</span><span class="st">`</span>))</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(us_sociodemographics_state_age_counts))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+  State      `Under 18` `18 to 64` `Over 64`
+  &lt;chr&gt;           &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
+1 Alabama       1128001    3042042    884210
+2 Alaska         178458     457698     97815
+3 Arizona       1594780    4323461   1349934
+4 Arkansas       705879    1801128    525644
+5 California    8729012   24519287   5994486
+6 Colorado      1240882    3687335    882557</code></pre>
+</div>
+</div>
+<p>TODO: Summarize mean yearly bee abundance by state. Hint: first calculate total abundance from the “honeybee_abundance” and “bumblebee_abundance” columns by summing with mutate. Then calculate mean abundance using dplyr::group_by, dplyr::summarize, and base::mean.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>pollinator_abundance <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>year, <span class="sc">~</span>state, <span class="sc">~</span>honeybee_abundance, <span class="sc">~</span>bumblebee_abundance,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2019</span>, <span class="st">"CA"</span>, <span class="fl">132.4</span>, <span class="fl">45.1</span>,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2019</span>, <span class="st">"MA"</span>,  <span class="fl">98.2</span>, <span class="fl">52.7</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2019</span>, <span class="st">"TX"</span>, <span class="fl">110.9</span>, <span class="fl">39.5</span>,</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2019</span>, <span class="st">"MI"</span>,  <span class="fl">87.3</span>, <span class="fl">60.4</span>,</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2020</span>, <span class="st">"CA"</span>, <span class="fl">128.1</span>, <span class="fl">47.2</span>,</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2020</span>, <span class="st">"MA"</span>, <span class="fl">101.6</span>, <span class="fl">54.8</span>,</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2020</span>, <span class="st">"TX"</span>, <span class="fl">115.0</span>, <span class="fl">41.0</span>,</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2020</span>, <span class="st">"MI"</span>,  <span class="fl">90.7</span>, <span class="fl">62.1</span>,</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2021</span>, <span class="st">"CA"</span>, <span class="fl">140.3</span>, <span class="fl">49.5</span>,</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2021</span>, <span class="st">"MA"</span>, <span class="fl">105.4</span>, <span class="fl">55.9</span>,</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2021</span>, <span class="st">"TX"</span>, <span class="fl">118.6</span>, <span class="fl">42.8</span>,</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2021</span>, <span class="st">"MI"</span>,  <span class="fl">92.1</span>, <span class="fl">63.7</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>pollinators_mean_abundance_by_state <span class="ot">&lt;-</span> pollinator_abundance <span class="sc">|&gt;</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">total_abundance =</span> honeybee_abundance <span class="sc">+</span> bumblebee_abundance) <span class="sc">|&gt;</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(state) <span class="sc">|&gt;</span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">mean_abundance =</span> <span class="fu">mean</span>(total_abundance))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="visualize-data-with-ggplot2" class="level2">
+<h2 class="anchored" data-anchor-id="visualize-data-with-ggplot2">Visualize data with ggplot2</h2>
+<section id="in-this-section-we-will-create-figures-that-visualize-the-cancer-incidence-and-population-demographic-data-we-curated-in-the-previous-step." class="level3">
+<h3 class="anchored" data-anchor-id="in-this-section-we-will-create-figures-that-visualize-the-cancer-incidence-and-population-demographic-data-we-curated-in-the-previous-step.">In this section we will create figures that visualize the cancer incidence and population demographic data we curated in the previous step.</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Linking to GEOS 3.13.1, GDAL 3.11.0, PROJ 9.6.2; sf_use_s2() is TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tigris)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>To enable caching of data, set `options(tigris_use_cache = TRUE)`
+in your R script or .Rprofile.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get county polygons with FIPS GEOID</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Exclude AK, HI, PR, and territories for a compact continental view</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>counties_sf <span class="ot">&lt;-</span> <span class="fu">counties</span>(<span class="at">cb =</span> <span class="cn">TRUE</span>, <span class="at">resolution =</span> <span class="st">"5m"</span>, <span class="at">year =</span> <span class="dv">2023</span>, <span class="at">class =</span> <span class="st">"sf"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |=                                                                     |   1%
+  |                                                                            
+  |=                                                                     |   2%
+  |                                                                            
+  |==                                                                    |   2%
+  |                                                                            
+  |==                                                                    |   3%
+  |                                                                            
+  |===                                                                   |   4%
+  |                                                                            
+  |===                                                                   |   5%
+  |                                                                            
+  |====                                                                  |   5%
+  |                                                                            
+  |====                                                                  |   6%
+  |                                                                            
+  |=====                                                                 |   6%
+  |                                                                            
+  |=====                                                                 |   7%
+  |                                                                            
+  |=====                                                                 |   8%
+  |                                                                            
+  |======                                                                |   8%
+  |                                                                            
+  |======                                                                |   9%
+  |                                                                            
+  |=======                                                               |  10%
+  |                                                                            
+  |=======                                                               |  11%
+  |                                                                            
+  |========                                                              |  11%
+  |                                                                            
+  |========                                                              |  12%
+  |                                                                            
+  |=========                                                             |  12%
+  |                                                                            
+  |=========                                                             |  13%
+  |                                                                            
+  |==========                                                            |  14%
+  |                                                                            
+  |==========                                                            |  15%
+  |                                                                            
+  |===========                                                           |  16%
+  |                                                                            
+  |============                                                          |  17%
+  |                                                                            
+  |============                                                          |  18%
+  |                                                                            
+  |=============                                                         |  18%
+  |                                                                            
+  |=============                                                         |  19%
+  |                                                                            
+  |==============                                                        |  19%
+  |                                                                            
+  |==============                                                        |  20%
+  |                                                                            
+  |===============                                                       |  21%
+  |                                                                            
+  |===============                                                       |  22%
+  |                                                                            
+  |================                                                      |  23%
+  |                                                                            
+  |=================                                                     |  24%
+  |                                                                            
+  |=================                                                     |  25%
+  |                                                                            
+  |==================                                                    |  25%
+  |                                                                            
+  |==================                                                    |  26%
+  |                                                                            
+  |===================                                                   |  27%
+  |                                                                            
+  |===================                                                   |  28%
+  |                                                                            
+  |====================                                                  |  28%
+  |                                                                            
+  |====================                                                  |  29%
+  |                                                                            
+  |=====================                                                 |  30%
+  |                                                                            
+  |======================                                                |  31%
+  |                                                                            
+  |======================                                                |  32%
+  |                                                                            
+  |=======================                                               |  33%
+  |                                                                            
+  |========================                                              |  34%
+  |                                                                            
+  |========================                                              |  35%
+  |                                                                            
+  |=========================                                             |  35%
+  |                                                                            
+  |=========================                                             |  36%
+  |                                                                            
+  |==========================                                            |  37%
+  |                                                                            
+  |===========================                                           |  38%
+  |                                                                            
+  |===========================                                           |  39%
+  |                                                                            
+  |============================                                          |  40%
+  |                                                                            
+  |=============================                                         |  41%
+  |                                                                            
+  |=============================                                         |  42%
+  |                                                                            
+  |==============================                                        |  42%
+  |                                                                            
+  |==============================                                        |  43%
+  |                                                                            
+  |===============================                                       |  44%
+  |                                                                            
+  |===============================                                       |  45%
+  |                                                                            
+  |================================                                      |  45%
+  |                                                                            
+  |================================                                      |  46%
+  |                                                                            
+  |=================================                                     |  47%
+  |                                                                            
+  |==================================                                    |  48%
+  |                                                                            
+  |==================================                                    |  49%
+  |                                                                            
+  |===================================                                   |  50%
+  |                                                                            
+  |====================================                                  |  51%
+  |                                                                            
+  |====================================                                  |  52%
+  |                                                                            
+  |=====================================                                 |  53%
+  |                                                                            
+  |======================================                                |  54%
+  |                                                                            
+  |======================================                                |  55%
+  |                                                                            
+  |=======================================                               |  55%
+  |                                                                            
+  |=======================================                               |  56%
+  |                                                                            
+  |========================================                              |  57%
+  |                                                                            
+  |=========================================                             |  58%
+  |                                                                            
+  |=========================================                             |  59%
+  |                                                                            
+  |==========================================                            |  60%
+  |                                                                            
+  |==========================================                            |  61%
+  |                                                                            
+  |===========================================                           |  61%
+  |                                                                            
+  |===========================================                           |  62%
+  |                                                                            
+  |============================================                          |  62%
+  |                                                                            
+  |============================================                          |  63%
+  |                                                                            
+  |=============================================                         |  64%
+  |                                                                            
+  |==============================================                        |  65%
+  |                                                                            
+  |==============================================                        |  66%
+  |                                                                            
+  |===============================================                       |  67%
+  |                                                                            
+  |================================================                      |  68%
+  |                                                                            
+  |================================================                      |  69%
+  |                                                                            
+  |=================================================                     |  70%
+  |                                                                            
+  |==================================================                    |  71%
+  |                                                                            
+  |==================================================                    |  72%
+  |                                                                            
+  |===================================================                   |  72%
+  |                                                                            
+  |===================================================                   |  73%
+  |                                                                            
+  |====================================================                  |  74%
+  |                                                                            
+  |====================================================                  |  75%
+  |                                                                            
+  |=====================================================                 |  75%
+  |                                                                            
+  |=====================================================                 |  76%
+  |                                                                            
+  |======================================================                |  77%
+  |                                                                            
+  |======================================================                |  78%
+  |                                                                            
+  |=======================================================               |  78%
+  |                                                                            
+  |=======================================================               |  79%
+  |                                                                            
+  |========================================================              |  80%
+  |                                                                            
+  |=========================================================             |  81%
+  |                                                                            
+  |=========================================================             |  82%
+  |                                                                            
+  |==========================================================            |  83%
+  |                                                                            
+  |===========================================================           |  84%
+  |                                                                            
+  |===========================================================           |  85%
+  |                                                                            
+  |============================================================          |  85%
+  |                                                                            
+  |============================================================          |  86%
+  |                                                                            
+  |=============================================================         |  87%
+  |                                                                            
+  |=============================================================         |  88%
+  |                                                                            
+  |==============================================================        |  88%
+  |                                                                            
+  |==============================================================        |  89%
+  |                                                                            
+  |===============================================================       |  89%
+  |                                                                            
+  |===============================================================       |  90%
+  |                                                                            
+  |===============================================================       |  91%
+  |                                                                            
+  |================================================================      |  91%
+  |                                                                            
+  |================================================================      |  92%
+  |                                                                            
+  |=================================================================     |  92%
+  |                                                                            
+  |=================================================================     |  93%
+  |                                                                            
+  |==================================================================    |  94%
+  |                                                                            
+  |==================================================================    |  95%
+  |                                                                            
+  |===================================================================   |  95%
+  |                                                                            
+  |===================================================================   |  96%
+  |                                                                            
+  |====================================================================  |  97%
+  |                                                                            
+  |====================================================================  |  98%
+  |                                                                            
+  |===================================================================== |  98%
+  |                                                                            
+  |===================================================================== |  99%
+  |                                                                            
+  |======================================================================|  99%
+  |                                                                            
+  |======================================================================| 100%</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>counties_sf_filt <span class="ot">&lt;-</span> counties_sf<span class="sc">|&gt;</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Filter out states that are not in the contiguous US</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span>STATEFP <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"02"</span>,<span class="st">"15"</span>,<span class="st">"60"</span>,<span class="st">"66"</span>,<span class="st">"69"</span>,<span class="st">"72"</span>,<span class="st">"78"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Combine the state and county FIPS code </span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">FIPS =</span> <span class="fu">as.integer</span>(<span class="fu">paste0</span>(STATEFP, COUNTYFP))) <span class="sc">|&gt;</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(FIPS, geometry)</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter us_cancer_incidence_county_long to only include all site cancer incidence rates</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>us_cancer_incidence_county_all <span class="ot">&lt;-</span> us_cancer_incidence_county_long <span class="sc">|&gt;</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(RE <span class="sc">==</span> <span class="st">"All"</span>,</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>                Sex <span class="sc">==</span> <span class="st">"All"</span>,</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>                cancer_site <span class="sc">==</span> <span class="st">"All Site"</span>)</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Merge the map geometry with the cancer incidence data</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>map_data <span class="ot">&lt;-</span> <span class="fu">merge</span>(counties_sf_filt,</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>                  us_cancer_incidence_county_all,</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>                  <span class="at">by =</span> <span class="st">"FIPS"</span>,</span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>                  <span class="at">all.x =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(map_data) <span class="sc">+</span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> age_adjusted_rate), <span class="at">size =</span> <span class="fl">0.05</span>) <span class="sc">+</span></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">option =</span> <span class="st">"plasma"</span>, <span class="at">na.value =</span> <span class="st">"grey90"</span>) <span class="sc">+</span></span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>() <span class="sc">+</span></span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"All Site Cancer Incidence Age Adjusted Rate"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="BGSA_R_workshop_2025_todo_answered_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Create a bar graph that shows the count of each age in northeast states.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pivot us_sociodemographics_state_age_counts_long to long format</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>us_sociodemographics_state_age_counts_long <span class="ot">&lt;-</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  us_sociodemographics_state_age_counts <span class="sc">|&gt;</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="sc">-</span>State,</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to  =</span> <span class="st">"age_group"</span>,</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"count"</span>)</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter table to keep only northeast states</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>northeast_states <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Connecticut"</span>,<span class="st">"Maine"</span>,<span class="st">"Massachusetts"</span>,<span class="st">"New Hampshire"</span>,<span class="st">"Rhode Island"</span>,<span class="st">"Vermont"</span>,</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"New Jersey"</span>,<span class="st">"New York"</span>,<span class="st">"Pennsylvania"</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>us_sociodemographics_state_age_counts_long <span class="ot">&lt;-</span> </span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>  us_sociodemographics_state_age_counts_long <span class="sc">|&gt;</span></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(State <span class="sc">%in%</span> northeast_states)</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the age counts</span></span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> us_sociodemographics_state_age_counts_long) <span class="sc">+</span></span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">x =</span> State, <span class="at">y =</span> count, <span class="at">fill =</span> age_group)) <span class="sc">+</span></span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_d</span>(<span class="at">option =</span> <span class="st">"cividis"</span>) <span class="sc">+</span></span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="BGSA_R_workshop_2025_todo_answered_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>TODO: Create a bar graph with “year” on the x-axis and “ground_nesting_bee_abundance” on the y-axis.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>ground_bees <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>year, <span class="sc">~</span>ground_nesting_bee_abundance,</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2019</span>, <span class="fl">95.3</span>,</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2020</span>, <span class="fl">101.7</span>,</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2021</span>, <span class="fl">108.4</span>,</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2022</span>, <span class="fl">104.9</span>,</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2023</span>, <span class="fl">112.6</span>,</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2024</span>, <span class="fl">118.2</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> ground_bees) <span class="sc">+</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> ground_nesting_bee_abundance))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="BGSA_R_workshop_2025_todo_answered_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="below-are-some-ggplot2-examples-of-a-histogram-scatter-and-box-plot." class="level4">
+<h4 class="anchored" data-anchor-id="below-are-some-ggplot2-examples-of-a-histogram-scatter-and-box-plot.">Below are some ggplot2 examples of a histogram, scatter, and box plot.</h4>
+<p>Create fake bee data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a small bee-themed table with tribble</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>bees <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>year, <span class="sc">~</span>state, <span class="sc">~</span>habitat,       <span class="sc">~</span>flower_density, <span class="sc">~</span>honeybee_abundance, <span class="sc">~</span>bumblebee_abundance, <span class="sc">~</span>ground_nesting_bee_abundance,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2019</span>,  <span class="st">"CA"</span>,   <span class="st">"agriculture"</span>,  <span class="dv">45</span>,              <span class="dv">132</span>,                 <span class="fl">45.1</span>,                 <span class="dv">72</span>,</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2019</span>,  <span class="st">"MA"</span>,   <span class="st">"forest"</span>,       <span class="dv">28</span>,               <span class="fl">98.2</span>,               <span class="fl">52.7</span>,                 <span class="dv">64</span>,</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2019</span>,  <span class="st">"TX"</span>,   <span class="st">"grassland"</span>,    <span class="dv">22</span>,              <span class="dv">111</span>,                 <span class="fl">39.5</span>,                 <span class="dv">55</span>,</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2019</span>,  <span class="st">"MI"</span>,   <span class="st">"urban"</span>,        <span class="dv">35</span>,               <span class="fl">87.3</span>,               <span class="fl">60.4</span>,                 <span class="dv">49</span>,</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2020</span>,  <span class="st">"CA"</span>,   <span class="st">"agriculture"</span>,  <span class="dv">50</span>,              <span class="dv">128</span>,                 <span class="fl">47.2</span>,                 <span class="dv">74</span>,</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2020</span>,  <span class="st">"MA"</span>,   <span class="st">"forest"</span>,       <span class="dv">30</span>,              <span class="dv">102</span>,                 <span class="fl">54.8</span>,                 <span class="dv">66</span>,</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2020</span>,  <span class="st">"TX"</span>,   <span class="st">"grassland"</span>,    <span class="dv">25</span>,              <span class="dv">115</span>,                 <span class="fl">41.0</span>,                 <span class="dv">58</span>,</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2020</span>,  <span class="st">"MI"</span>,   <span class="st">"urban"</span>,        <span class="dv">32</span>,               <span class="fl">90.7</span>,               <span class="fl">62.1</span>,                 <span class="dv">52</span>,</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2021</span>,  <span class="st">"CA"</span>,   <span class="st">"agriculture"</span>,  <span class="dv">55</span>,              <span class="dv">140</span>,                 <span class="fl">49.5</span>,                 <span class="dv">78</span>,</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2021</span>,  <span class="st">"MA"</span>,   <span class="st">"forest"</span>,       <span class="dv">33</span>,              <span class="dv">105</span>,                 <span class="fl">55.9</span>,                 <span class="dv">68</span>,</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2021</span>,  <span class="st">"TX"</span>,   <span class="st">"grassland"</span>,    <span class="dv">27</span>,              <span class="dv">119</span>,                 <span class="fl">42.8</span>,                 <span class="dv">60</span>,</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2021</span>,  <span class="st">"MI"</span>,   <span class="st">"urban"</span>,        <span class="dv">31</span>,               <span class="fl">92.1</span>,               <span class="fl">63.7</span>,                 <span class="dv">53</span></span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Histogram: counts of samples by honeybee abundance bin, with mean annotated</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(bees, <span class="fu">aes</span>(honeybee_abundance)) <span class="sc">+</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">11</span>, <span class="at">boundary =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Honeybee abundance across samples"</span>,</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Histogram of samples with dashed line at the mean"</span>,</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Honeybee abundance"</span>, <span class="at">y =</span> <span class="st">"Count of samples"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="BGSA_R_workshop_2025_todo_answered_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Scatter plot: bumblebee abundance vs floral resources, with linear trend and note</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(bees, <span class="fu">aes</span>(flower_density, bumblebee_abundance, <span class="at">color =</span> habitat)) <span class="sc">+</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Bumblebee abundance vs flower density"</span>,</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Each point is a state–year sample; line is linear fit"</span>,</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Flower density (blooms per 100 m²)"</span>, <span class="at">y =</span> <span class="st">"Bumblebee abundance"</span>,</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Habitat"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="BGSA_R_workshop_2025_todo_answered_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Box plot: ground-nesting bee abundance by habitat, with highest median flagged</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(bees, <span class="fu">aes</span>(habitat, ground_nesting_bee_abundance, <span class="at">fill =</span> habitat)) <span class="sc">+</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun =</span> median, <span class="at">geom =</span> <span class="st">"point"</span>, <span class="at">shape =</span> <span class="dv">23</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">fill =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expand_limits</span>(<span class="at">y =</span> <span class="fu">max</span>(bees<span class="sc">$</span>ground_nesting_bee_abundance) <span class="sc">+</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Ground-nesting bee abundance by habitat"</span>,</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Boxes show median and IQR"</span>,</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Habitat"</span>, <span class="at">y =</span> <span class="st">"Abundance"</span>) <span class="sc">+</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="BGSA_R_workshop_2025_todo_answered_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="single-cell-analysis-with-seurat" class="level2">
+<h2 class="anchored" data-anchor-id="single-cell-analysis-with-seurat">Single-cell analysis with Seurat</h2>
+<p>Load in packages and single-cell data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Seurat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: SeuratObject</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: sp</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'SeuratObject'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, t</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scRNAseq)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: SingleCellExperiment</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: SummarizedExperiment</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: MatrixGenerics</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: matrixStats</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'matrixStats'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:dplyr':
+
+    count</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'MatrixGenerics'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:matrixStats':
+
+    colAlls, colAnyNAs, colAnys, colAvgsPerRowSet, colCollapse,
+    colCounts, colCummaxs, colCummins, colCumprods, colCumsums,
+    colDiffs, colIQRDiffs, colIQRs, colLogSumExps, colMadDiffs,
+    colMads, colMaxs, colMeans2, colMedians, colMins, colOrderStats,
+    colProds, colQuantiles, colRanges, colRanks, colSdDiffs, colSds,
+    colSums2, colTabulates, colVarDiffs, colVars, colWeightedMads,
+    colWeightedMeans, colWeightedMedians, colWeightedSds,
+    colWeightedVars, rowAlls, rowAnyNAs, rowAnys, rowAvgsPerColSet,
+    rowCollapse, rowCounts, rowCummaxs, rowCummins, rowCumprods,
+    rowCumsums, rowDiffs, rowIQRDiffs, rowIQRs, rowLogSumExps,
+    rowMadDiffs, rowMads, rowMaxs, rowMeans2, rowMedians, rowMins,
+    rowOrderStats, rowProds, rowQuantiles, rowRanges, rowRanks,
+    rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,
+    rowWeightedMads, rowWeightedMeans, rowWeightedMedians,
+    rowWeightedSds, rowWeightedVars</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: GenomicRanges</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: stats4</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: BiocGenerics</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: generics</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'generics'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:lubridate':
+
+    as.difftime</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:dplyr':
+
+    explain</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    as.difftime, as.factor, as.ordered, intersect, is.element, setdiff,
+    setequal, union</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'BiocGenerics'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:dplyr':
+
+    combine</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    IQR, mad, sd, var, xtabs</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    anyDuplicated, aperm, append, as.data.frame, basename, cbind,
+    colnames, dirname, do.call, duplicated, eval, evalq, Filter, Find,
+    get, grep, grepl, is.unsorted, lapply, Map, mapply, match, mget,
+    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+    rbind, Reduce, rownames, sapply, saveRDS, table, tapply, unique,
+    unsplit, which.max, which.min</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: S4Vectors</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'S4Vectors'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:lubridate':
+
+    second, second&lt;-</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:dplyr':
+
+    first, rename</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:tidyr':
+
+    expand</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:utils':
+
+    findMatches</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    expand.grid, I, unname</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: IRanges</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'IRanges'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:sp':
+
+    %over%</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:lubridate':
+
+    %within%</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:dplyr':
+
+    collapse, desc, slice</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:purrr':
+
+    reduce</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: GenomeInfoDb</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: Biobase</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Welcome to Bioconductor
+
+    Vignettes contain introductory material; view with
+    'browseVignettes()'. To cite Bioconductor, see
+    'citation("Biobase")', and for packages 'citation("pkgname")'.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'Biobase'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:MatrixGenerics':
+
+    rowMedians</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:matrixStats':
+
+    anyMissing, rowMedians</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'SummarizedExperiment'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:Seurat':
+
+    Assays</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:SeuratObject':
+
+    Assays</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load SCE</span></span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>sce_zeisel_brain <span class="ot">&lt;-</span> <span class="fu">ZeiselBrainData</span>()  <span class="co"># ~3k mouse brain cells</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Found more than one class "package_version" in cache; using the first, from namespace 'SeuratObject'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Also defined by 'alabaster.base'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Found more than one class "package_version" in cache; using the first, from namespace 'SeuratObject'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Also defined by 'alabaster.base'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Found more than one class "package_version" in cache; using the first, from namespace 'SeuratObject'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Also defined by 'alabaster.base'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Found more than one class "package_version" in cache; using the first, from namespace 'SeuratObject'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Also defined by 'alabaster.base'</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use gene symbols as rownames if available to ensure nice plotting and markers</span></span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="st">"feature_symbol"</span> <span class="sc">%in%</span> <span class="fu">colnames</span>(<span class="fu">rowData</span>(sce_zeisel_brain))) {</span>
+<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a>  gene_symbols <span class="ot">&lt;-</span> <span class="fu">rowData</span>(sce_zeisel_brain)<span class="sc">$</span>feature_symbol</span>
+<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(sce_zeisel_brain) <span class="ot">&lt;-</span> <span class="fu">make.unique</span>(<span class="fu">ifelse</span>(<span class="fu">is.na</span>(gene_symbols) <span class="sc">|</span> gene_symbols <span class="sc">==</span> <span class="st">""</span>, <span class="fu">rownames</span>(sce_zeisel_brain), gene_symbols))</span>
+<span id="cb90-5"><a href="#cb90-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This step pulls the raw counts, converts them to a memory-efficient sparse matrix, and wraps them into a Seurat object with basic quality filters applied.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert counts to sparse matrix and then to Seurat</span></span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>counts_matrix <span class="ot">&lt;-</span> <span class="fu">assay</span>(sce_zeisel_brain, <span class="st">"counts"</span>)</span>
+<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">inherits</span>(counts_matrix, <span class="st">"dgCMatrix"</span>)) counts_matrix <span class="ot">&lt;-</span> <span class="fu">Matrix</span>(<span class="fu">as.matrix</span>(counts_matrix), <span class="at">sparse =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">is.null</span>(<span class="fu">colnames</span>(counts_matrix))) <span class="fu">colnames</span>(counts_matrix) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"cell_"</span>, <span class="fu">seq_len</span>(<span class="fu">ncol</span>(counts_matrix)))</span>
+<span id="cb91-5"><a href="#cb91-5" aria-hidden="true" tabindex="-1"></a>seurat_object <span class="ot">&lt;-</span> <span class="fu">CreateSeuratObject</span>(<span class="at">counts =</span> counts_matrix, <span class="at">project =</span> <span class="st">"zeisel"</span>, <span class="at">min.cells =</span> <span class="dv">3</span>, <span class="at">min.features =</span> <span class="dv">200</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Feature names cannot have underscores ('_'), replacing with dashes
+('-')</code></pre>
+</div>
+</div>
+<p>Calculate, for each cell, the proportion of transcripts that come from mitochondrial genes, which serves as a quality control metric because cells with unusually high mitochondrial content are often stressed, damaged, or dying.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute percent_mt using a case insensitive mt prefix and perform sanity checks</span></span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>mt_regex_pattern <span class="ot">&lt;-</span> <span class="st">"(?i)^mt-"</span></span>
+<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a>gene_is_mitochondrial <span class="ot">&lt;-</span> <span class="fu">grepl</span>(mt_regex_pattern, <span class="fu">rownames</span>(seurat_object))</span>
+<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a>mitochondrial_gene_symbols <span class="ot">&lt;-</span> <span class="fu">rownames</span>(seurat_object)[gene_is_mitochondrial]</span>
+<span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a>mitochondrial_gene_count <span class="ot">&lt;-</span> <span class="fu">length</span>(mitochondrial_gene_symbols)</span>
+<span id="cb93-6"><a href="#cb93-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-7"><a href="#cb93-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Print a short summary with interpretation</span></span>
+<span id="cb93-8"><a href="#cb93-8" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Mitochondrial genes matched by regex:"</span>, mitochondrial_gene_count, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Mitochondrial genes matched by regex: 34 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Expect roughly 13 for human or about 37 for mouse depending on annotation"</span>, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Expect roughly 13 for human or about 37 for mouse depending on annotation </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Warn on suspicious counts and suggest next steps</span></span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (mitochondrial_gene_count <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">warning</span>(<span class="st">"No mitochondrial genes matched. Check feature naming or use chromosome based annotations"</span>)</span>
+<span id="cb97-4"><a href="#cb97-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb97-5"><a href="#cb97-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (mitochondrial_gene_count <span class="sc">&lt;</span> <span class="dv">8</span> <span class="sc">&amp;&amp;</span> mitochondrial_gene_count <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb97-6"><a href="#cb97-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">warning</span>(<span class="st">"Very few mitochondrial genes detected. Verify gene symbols or genome build"</span>)</span>
+<span id="cb97-7"><a href="#cb97-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb97-8"><a href="#cb97-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (mitochondrial_gene_count <span class="sc">&gt;</span> <span class="dv">50</span>) {</span>
+<span id="cb97-9"><a href="#cb97-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">warning</span>(<span class="st">"Unusually many mitochondrial genes detected. Check for duplicated or misannotated features"</span>)</span>
+<span id="cb97-10"><a href="#cb97-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb97-11"><a href="#cb97-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb97-12"><a href="#cb97-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Add percent_mt using the exact matched gene list</span></span>
+<span id="cb97-13"><a href="#cb97-13" aria-hidden="true" tabindex="-1"></a>seurat_object[[<span class="st">"percent_mt"</span>]] <span class="ot">&lt;-</span> <span class="fu">PercentageFeatureSet</span>(</span>
+<span id="cb97-14"><a href="#cb97-14" aria-hidden="true" tabindex="-1"></a>  seurat_object,</span>
+<span id="cb97-15"><a href="#cb97-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">features =</span> mitochondrial_gene_symbols</span>
+<span id="cb97-16"><a href="#cb97-16" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Normalize the single-cell gene expression data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize data, find variable features, and scale data</span></span>
+<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a>seurat_object <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(seurat_object, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb98-3"><a href="#cb98-3" aria-hidden="true" tabindex="-1"></a>seurat_object <span class="ot">&lt;-</span> <span class="fu">FindVariableFeatures</span>(seurat_object, <span class="at">selection.method =</span> <span class="st">"vst"</span>, <span class="at">nfeatures =</span> <span class="dv">2000</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb98-4"><a href="#cb98-4" aria-hidden="true" tabindex="-1"></a>seurat_object <span class="ot">&lt;-</span> <span class="fu">ScaleData</span>(seurat_object, <span class="at">features =</span> <span class="fu">rownames</span>(seurat_object), <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb98-5"><a href="#cb98-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb98-6"><a href="#cb98-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Inspect layers</span></span>
+<span id="cb98-7"><a href="#cb98-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Inspect Seurat layers as sanity check"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Inspect Seurat layers as sanity check"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">Layers</span>(seurat_object))                                    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "counts"     "data"       "scale.data"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">dim</span>(<span class="fu">GetAssayData</span>(seurat_object, <span class="at">assay =</span> <span class="st">"RNA"</span>, <span class="at">layer =</span> <span class="st">"data"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Run PCA, neighbors, clustering, and UMAP.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a>seurat_object <span class="ot">&lt;-</span> <span class="fu">RunPCA</span>(seurat_object, <span class="at">features =</span> <span class="fu">VariableFeatures</span>(seurat_object), <span class="at">npcs =</span> <span class="dv">30</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a>seurat_object <span class="ot">&lt;-</span> <span class="fu">FindNeighbors</span>(seurat_object, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb103-3"><a href="#cb103-3" aria-hidden="true" tabindex="-1"></a>seurat_object <span class="ot">&lt;-</span> <span class="fu">FindClusters</span>(seurat_object, <span class="at">resolution =</span> <span class="fl">0.5</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb103-4"><a href="#cb103-4" aria-hidden="true" tabindex="-1"></a>seurat_object <span class="ot">&lt;-</span> <span class="fu">RunUMAP</span>(seurat_object, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric
+To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to 'correlation'
+This message will be shown once per session</code></pre>
+</div>
+</div>
+<p>Plot quality control and dimensional reductions.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(</span>
+<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">VlnPlot</span>(</span>
+<span id="cb105-3"><a href="#cb105-3" aria-hidden="true" tabindex="-1"></a>    seurat_object,</span>
+<span id="cb105-4"><a href="#cb105-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">features =</span> <span class="fu">c</span>(<span class="st">"nFeature_RNA"</span>, <span class="st">"nCount_RNA"</span>, <span class="st">"percent_mt"</span>),</span>
+<span id="cb105-5"><a href="#cb105-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">pt.size =</span> <span class="fl">0.1</span>,</span>
+<span id="cb105-6"><a href="#cb105-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">ncol =</span> <span class="dv">1</span></span>
+<span id="cb105-7"><a href="#cb105-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Percent Mitochondrial"</span>)</span>
+<span id="cb105-8"><a href="#cb105-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: The `slot` argument of `FetchData()` is deprecated as of SeuratObject 5.0.0.
+ℹ Please use the `layer` argument instead.
+ℹ The deprecated feature was likely used in the Seurat package.
+  Please report the issue at &lt;https://github.com/satijalab/seurat/issues&gt;.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: `PackageCheck()` was deprecated in SeuratObject 5.0.0.
+ℹ Please use `rlang::check_installed()` instead.
+ℹ The deprecated feature was likely used in the Seurat package.
+  Please report the issue at &lt;https://github.com/satijalab/seurat/issues&gt;.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="BGSA_R_workshop_2025_todo_answered_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Plot UMAP cell clusters.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(</span>
+<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">DimPlot</span>(</span>
+<span id="cb108-3"><a href="#cb108-3" aria-hidden="true" tabindex="-1"></a>    seurat_object,</span>
+<span id="cb108-4"><a href="#cb108-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">reduction =</span> <span class="st">"umap"</span>,</span>
+<span id="cb108-5"><a href="#cb108-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="cn">TRUE</span></span>
+<span id="cb108-6"><a href="#cb108-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"UMAP of Cells Colored by Seurat Clusters"</span>)</span>
+<span id="cb108-7"><a href="#cb108-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="BGSA_R_workshop_2025_todo_answered_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Make a multi-faceted UMAP plot that highlights the expression of cell-type marker genes. If a cluster shows high expression of a well-established marker gene, it suggests that the cluster is enriched for the corresponding cell type.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot feature expression for common mouse markers or fallback to variable features</span></span>
+<span id="cb109-2"><a href="#cb109-2" aria-hidden="true" tabindex="-1"></a>candidate_markers <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Gad1"</span>,<span class="st">"Gad2"</span>,<span class="st">"Slc17a7"</span>,<span class="st">"Sst"</span>,<span class="st">"Pcp4"</span>,<span class="st">"Aqp4"</span>,<span class="st">"Gfap"</span>,<span class="st">"Mog"</span>,<span class="st">"Plp1"</span>,<span class="st">"C1qa"</span>,<span class="st">"C1qb"</span>,<span class="st">"Lyz2"</span>,<span class="st">"Tyrobp"</span>,<span class="st">"P2ry12"</span>,<span class="st">"Reln"</span>)</span>
+<span id="cb109-3"><a href="#cb109-3" aria-hidden="true" tabindex="-1"></a>selected_features <span class="ot">&lt;-</span> <span class="fu">intersect</span>(candidate_markers, <span class="fu">rownames</span>(seurat_object))</span>
+<span id="cb109-4"><a href="#cb109-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(selected_features) <span class="sc">==</span> <span class="dv">0</span>) selected_features <span class="ot">&lt;-</span> <span class="fu">head</span>(<span class="fu">VariableFeatures</span>(seurat_object), <span class="dv">6</span>)</span>
+<span id="cb109-5"><a href="#cb109-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb109-6"><a href="#cb109-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(</span>
+<span id="cb109-7"><a href="#cb109-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">FeaturePlot</span>(</span>
+<span id="cb109-8"><a href="#cb109-8" aria-hidden="true" tabindex="-1"></a>    seurat_object,</span>
+<span id="cb109-9"><a href="#cb109-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">features =</span> <span class="fu">head</span>(selected_features, <span class="dv">6</span>),</span>
+<span id="cb109-10"><a href="#cb109-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">ncol =</span> <span class="dv">3</span></span>
+<span id="cb109-11"><a href="#cb109-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Expression of Selected Marker Genes"</span>)</span>
+<span id="cb109-12"><a href="#cb109-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="BGSA_R_workshop_2025_todo_answered_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Overall summary:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Cells:"</span>, <span class="fu">ncol</span>(seurat_object), <span class="st">"Genes:"</span>, <span class="fu">nrow</span>(seurat_object), <span class="st">"Clusters:"</span>, <span class="fu">length</span>(<span class="fu">levels</span>(<span class="fu">Idents</span>(seurat_object))), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Cells: 3005 Genes: 18913 Clusters: 18 </code></pre>
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

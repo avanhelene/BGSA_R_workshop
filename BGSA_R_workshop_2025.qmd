@@ -4,35 +4,6 @@ format: html
 editor: visual
 ---
 
-Install packages if needed.
-
-```{r}
-# List of CRAN packages
-cran_packages <- c("tidyverse", "sf", "tigris", "Seurat")
-
-# List of Bioconductor packages
-bioc_packages <- c("scRNAseq")
-
-# Install BiocManager if not already installed
-if (!requireNamespace("BiocManager", quietly = TRUE)) {
-  install.packages("BiocManager")
-}
-
-# Install missing CRAN packages
-for (pkg in cran_packages) {
-  if (!requireNamespace(pkg, quietly = TRUE)) {
-    install.packages(pkg)
-  }
-}
-
-# Install missing Bioconductor packages
-for (pkg in bioc_packages) {
-  if (!requireNamespace(pkg, quietly = TRUE)) {
-    BiocManager::install(pkg, ask = FALSE, update = FALSE)
-  }
-}
-```
-
 ```{r}
 library(tidyverse)
 ```
@@ -98,6 +69,8 @@ gene_expression_wide <- tibble::tribble(
   "GSM2804845","GSE104645",    0.86,   0.47,   0.01,  -0.03,
   "GSM2804846","GSE104645",    1.07,   0.41,  -0.72,  -0.07
 )
+
+
 ```
 
 The us_cancer_incidence_county_long table has some values in the "cancer_site" column that we are not interested in. Use the filter function from the dplyr library to remove rows with certain values in the "cancer_site" column.
