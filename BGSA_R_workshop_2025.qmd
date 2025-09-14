@@ -1,0 +1,439 @@
+---
+title: "BGSA_R_workshop_2025-09-13"
+format: html
+editor: visual
+---
+
+Install packages if needed.
+
+```{r}
+# List of CRAN packages
+cran_packages <- c("tidyverse", "sf", "tigris", "Seurat")
+
+# List of Bioconductor packages
+bioc_packages <- c("scRNAseq")
+
+# Install BiocManager if not already installed
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+  install.packages("BiocManager")
+}
+
+# Install missing CRAN packages
+for (pkg in cran_packages) {
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    install.packages(pkg)
+  }
+}
+
+# Install missing Bioconductor packages
+for (pkg in bioc_packages) {
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    BiocManager::install(pkg, ask = FALSE, update = FALSE)
+  }
+}
+```
+
+```{r}
+library(tidyverse)
+```
+
+## Tidyverse data wrangling with cancer incidence and population demographic data
+
+### In this section we will use functions from the tidyverse library "wrangle" population-level cancer and demographic data. Data wrangling refers to manipulating and reformatting data.
+
+#### Data from: <https://mcc-cri.shinyapps.io/cif-data>
+
+Use the file.path function to create paths.
+
+```{r}
+# Create a text string with the path to the cancer incidence data
+data_path <- file.path("data", "us_cancer_incidence_county_09-04-2025.csv")
+print(data_path)
+```
+
+Use the file path we constructed to read in the table using read.csv. You can see that we retrieved a wide format table, where the "FIPS" and "County" fields serve as IDs for each. Each also has a field for each cancer type e.g. "All Site", "Bladder", "Brain & ONS", ect.
+
+```{r}
+us_cancer_incidence_county <- read.csv(data_path,
+                                       check.names = FALSE)
+print(head(us_cancer_incidence_county))
+```
+
+We are also reading in population demographic counts for each county. We will save this table for later.
+
+```{r}
+data_path <- file.path("data", "us_sociodemographics_county_09-04-2025.csv")
+us_sociodemographics_county <- read.csv(data_path,
+                                        check.names = FALSE)
+```
+
+Our cancer incidence table is in wide format, but we want long format. We used the pivot_longer function from tidyr package to convert us_cancer_incidence_county from wide to long format.
+
+```{r}
+# Get columns that we will pivot to long format
+columns <- colnames(us_cancer_incidence_county) # Get all columns
+columns <- columns[!columns %in% c("FIPS", "County", "State", "Type", "RE", "Sex")] # Filter out columns that we are not pivoting to long format 
+
+# Pivot the table to long format
+us_cancer_incidence_county_long <- us_cancer_incidence_county |>
+  tidyr::pivot_longer(cols = -c(FIPS, 
+                                County, 
+                                State, 
+                                Type, 
+                                RE, 
+                                Sex), # Specify which columns are serve as row IDs and are not pivoted to long format
+                      names_to = "cancer_site", # Store the old column names in the new "cancer_site' column
+                      values_to = "age_adjusted_rate") # Store the old column values in the new "age_adjusted_rate' column
+
+print(head(us_cancer_incidence_county_long))
+```
+
+TODO: Pivot gene_expression_wide to long format, using tidyr::pivot_longer
+
+```{r}
+# example wide table
+gene_expression_wide <- tibble::tribble(
+  ~GSM,        ~GSE, ~`2`,   ~`9`,   ~`10`,  ~`12`,
+  "GSM2804844","GSE104645",    0.79,   0.24,  -0.52,   0.67,
+  "GSM2804845","GSE104645",    0.86,   0.47,   0.01,  -0.03,
+  "GSM2804846","GSE104645",    1.07,   0.41,  -0.72,  -0.07
+)
+```
+
+The us_cancer_incidence_county_long table has some values in the "cancer_site" column that we are not interested in. Use the filter function from the dplyr library to remove rows with certain values in the "cancer_site" column.
+
+```{r}
+# Get a vector of all values in "cancer_site" that end with ")"
+# We want to remove "cancer_site" values with parentheses like "Bladder (18-49 years)"
+cancer_site_values <- unique(us_cancer_incidence_county_long$cancer_site) # Get all unique values in the "cancer_site" column
+cancer_site_values_with_parentheses <- cancer_site_values[endsWith(cancer_site_values, ")")]
+print(paste0("We are removing rows with these values: '",
+             paste(cancer_site_values_with_parentheses, collapse = "', '"),
+             "'"))
+
+# Filter out rows where "cancer_site" is in cancer_site_values_with_parentheses
+us_cancer_incidence_county_long <- us_cancer_incidence_county_long |>
+  dplyr::filter(!cancer_site %in% cancer_site_values_with_parentheses)
+print(head(us_cancer_incidence_county_long))
+```
+
+TODO: Filter gene_expression_wide to only include the following GSMs: "GSM2804844", "GSM2804845."
+
+```{r}
+# example wide table
+gene_expression_wide <- tibble::tribble(
+  ~GSM,        ~GSE, ~`2`,   ~`9`,   ~`10`,  ~`12`,
+  "GSM2804844","GSE104645",    0.79,   0.24,  -0.52,   0.67,
+  "GSM2804845","GSE104645",    0.86,   0.47,   0.01,  -0.03,
+  "GSM2804846","GSE104645",    1.07,   0.41,  -0.72,  -0.07
+)
+```
+
+Since we are curious, lets count the number of people in each age group in each state using data from us_sociodemographics_county.
+
+```{r}
+# Convert age count fractions to counts by multiplying the fractions by the total population count for each county
+us_sociodemographics_county_age <- us_sociodemographics_county |>
+  dplyr::mutate(`Under 18` = `Under 18` * Total,
+                `18 to 64` = `18 to 64` * Total,
+                `Over 64` = `Over 64` * Total)
+
+# Use dplyr::group_by to specify the grouping columns
+# Use dplyr::summarise to sum the counts in each state
+us_sociodemographics_state_age_counts <- us_sociodemographics_county_age |>
+  dplyr::group_by(State) |>
+  dplyr::summarise(`Under 18` = sum(`Under 18`),
+                   `18 to 64` = sum(`18 to 64`),
+                   `Over 64` = sum(`Over 64`))
+
+print(head(us_sociodemographics_state_age_counts))
+```
+
+TODO: Summarize mean yearly bee abundance by state. Hint: first calculate total abundance from the "honeybee_abundance" and "bumblebee_abundance" columns by summing with mutate. Then calculate mean abundance using dplyr::group_by, dplyr::summarize, and base::mean.
+
+```{r}
+pollinator_abundance <- tribble(
+  ~year, ~state, ~honeybee_abundance, ~bumblebee_abundance,
+  2019, "CA", 132.4, 45.1,
+  2019, "MA",  98.2, 52.7,
+  2019, "TX", 110.9, 39.5,
+  2019, "MI",  87.3, 60.4,
+  2020, "CA", 128.1, 47.2,
+  2020, "MA", 101.6, 54.8,
+  2020, "TX", 115.0, 41.0,
+  2020, "MI",  90.7, 62.1,
+  2021, "CA", 140.3, 49.5,
+  2021, "MA", 105.4, 55.9,
+  2021, "TX", 118.6, 42.8,
+  2021, "MI",  92.1, 63.7
+)
+```
+
+## Visualize data with ggplot2
+
+### In this section we will create figures that visualize the cancer incidence and population demographic data we curated in the previous step.
+
+```{r}
+library(sf)
+library(ggplot2)
+library(tigris)
+
+# Get county polygons with FIPS GEOID
+# Exclude AK, HI, PR, and territories for a compact continental view
+counties_sf <- counties(cb = TRUE, resolution = "5m", year = 2023, class = "sf") 
+counties_sf_filt <- counties_sf|>
+  # Filter out states that are not in the contiguous US
+  dplyr::filter(!STATEFP %in% c("02","15","60","66","69","72","78")) |>
+  # Combine the state and county FIPS code 
+  dplyr::mutate(FIPS = as.integer(paste0(STATEFP, COUNTYFP))) |>
+  dplyr::select(FIPS, geometry)
+
+# Filter us_cancer_incidence_county_long to only include all site cancer incidence rates
+us_cancer_incidence_county_all <- us_cancer_incidence_county_long |>
+  dplyr::filter(RE == "All",
+                Sex == "All",
+                cancer_site == "All Site")
+
+# Merge the map geometry with the cancer incidence data
+map_data <- merge(counties_sf_filt,
+                  us_cancer_incidence_county_all,
+                  by = "FIPS",
+                  all.x = TRUE)
+
+ggplot(map_data) +
+  geom_sf(aes(fill = age_adjusted_rate), size = 0.05) +
+  scale_fill_viridis_c(option = "plasma", na.value = "grey90") +
+  coord_sf() +
+  theme_minimal() +
+  ggtitle("All Site Cancer Incidence Age Adjusted Rate")
+```
+
+Create a bar graph that shows the count of each age in northeast states.
+
+```{r}
+# pivot us_sociodemographics_state_age_counts_long to long format
+us_sociodemographics_state_age_counts_long <-
+  us_sociodemographics_state_age_counts |>
+  tidyr::pivot_longer(
+    cols = -State,
+    names_to  = "age_group",
+    values_to = "count")
+
+# Filter table to keep only northeast states
+northeast_states <- c(
+  "Connecticut","Maine","Massachusetts","New Hampshire","Rhode Island","Vermont",
+  "New Jersey","New York","Pennsylvania"
+)
+us_sociodemographics_state_age_counts_long <- 
+  us_sociodemographics_state_age_counts_long |>
+  filter(State %in% northeast_states)
+
+# Plot the age counts
+ggplot(data = us_sociodemographics_state_age_counts_long) +
+  geom_col(aes(x = State, y = count, fill = age_group)) +
+  coord_flip() +
+  scale_fill_viridis_d(option = "cividis") +
+  theme_minimal()
+```
+
+TODO: Create a bar graph with "year" on the x-axis and "ground_nesting_bee_abundance" on the y-axis.
+
+```{r}
+ground_bees <- tribble(
+  ~year, ~ground_nesting_bee_abundance,
+  2019, 95.3,
+  2020, 101.7,
+  2021, 108.4,
+  2022, 104.9,
+  2023, 112.6,
+  2024, 118.2
+)
+```
+
+#### Below are some ggplot2 examples of a histogram, scatter, and box plot.
+
+Create fake bee data.
+
+```{r}
+# Make a small bee-themed table with tribble
+bees <- tribble(
+  ~year, ~state, ~habitat,       ~flower_density, ~honeybee_abundance, ~bumblebee_abundance, ~ground_nesting_bee_abundance,
+  2019,  "CA",   "agriculture",  45,              132,                 45.1,                 72,
+  2019,  "MA",   "forest",       28,               98.2,               52.7,                 64,
+  2019,  "TX",   "grassland",    22,              111,                 39.5,                 55,
+  2019,  "MI",   "urban",        35,               87.3,               60.4,                 49,
+  2020,  "CA",   "agriculture",  50,              128,                 47.2,                 74,
+  2020,  "MA",   "forest",       30,              102,                 54.8,                 66,
+  2020,  "TX",   "grassland",    25,              115,                 41.0,                 58,
+  2020,  "MI",   "urban",        32,               90.7,               62.1,                 52,
+  2021,  "CA",   "agriculture",  55,              140,                 49.5,                 78,
+  2021,  "MA",   "forest",       33,              105,                 55.9,                 68,
+  2021,  "TX",   "grassland",    27,              119,                 42.8,                 60,
+  2021,  "MI",   "urban",        31,               92.1,               63.7,                 53
+)
+```
+
+Histogram: counts of samples by honeybee abundance bin, with mean annotated
+
+```{r}
+ggplot(bees, aes(honeybee_abundance)) +
+  geom_histogram(binwidth = 11, boundary = 0, color = "white") +
+  labs(title = "Honeybee abundance across samples",
+       subtitle = "Histogram of samples with dashed line at the mean",
+       x = "Honeybee abundance", y = "Count of samples")
+```
+
+Scatter plot: bumblebee abundance vs floral resources, with linear trend and note
+
+```{r}
+ggplot(bees, aes(flower_density, bumblebee_abundance, color = habitat)) +
+  geom_point(size = 2) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Bumblebee abundance vs flower density",
+       subtitle = "Each point is a state–year sample; line is linear fit",
+       x = "Flower density (blooms per 100 m²)", y = "Bumblebee abundance",
+       color = "Habitat")
+```
+
+Box plot: ground-nesting bee abundance by habitat, with highest median flagged
+
+```{r}
+ggplot(bees, aes(habitat, ground_nesting_bee_abundance, fill = habitat)) +
+  geom_boxplot(outlier.alpha = 0.6) +
+  stat_summary(fun = median, geom = "point", shape = 23, size = 3, fill = "white") +
+  expand_limits(y = max(bees$ground_nesting_bee_abundance) + 5) +
+  labs(title = "Ground-nesting bee abundance by habitat",
+       subtitle = "Boxes show median and IQR",
+       x = "Habitat", y = "Abundance") +
+  theme(legend.position = "none")
+```
+
+## Single-cell analysis with Seurat
+
+Load in packages and single-cell data.
+
+```{r}
+library(Seurat)
+library(scRNAseq)
+
+# Load SCE
+sce_zeisel_brain <- ZeiselBrainData()  # ~3k mouse brain cells
+
+# Use gene symbols as rownames if available to ensure nice plotting and markers
+if ("feature_symbol" %in% colnames(rowData(sce_zeisel_brain))) {
+  gene_symbols <- rowData(sce_zeisel_brain)$feature_symbol
+  rownames(sce_zeisel_brain) <- make.unique(ifelse(is.na(gene_symbols) | gene_symbols == "", rownames(sce_zeisel_brain), gene_symbols))
+}
+```
+
+This step pulls the raw counts, converts them to a memory-efficient sparse matrix, and wraps them into a Seurat object with basic quality filters applied.
+
+```{r}
+# Convert counts to sparse matrix and then to Seurat
+counts_matrix <- assay(sce_zeisel_brain, "counts")
+if (!inherits(counts_matrix, "dgCMatrix")) counts_matrix <- Matrix(as.matrix(counts_matrix), sparse = TRUE)
+if (is.null(colnames(counts_matrix))) colnames(counts_matrix) <- paste0("cell_", seq_len(ncol(counts_matrix)))
+seurat_object <- CreateSeuratObject(counts = counts_matrix, project = "zeisel", min.cells = 3, min.features = 200)
+```
+
+Calculate, for each cell, the proportion of transcripts that come from mitochondrial genes, which serves as a quality control metric because cells with unusually high mitochondrial content are often stressed, damaged, or dying.
+
+```{r}
+# Compute percent_mt using a case insensitive mt prefix and perform sanity checks
+mt_regex_pattern <- "(?i)^mt-"
+gene_is_mitochondrial <- grepl(mt_regex_pattern, rownames(seurat_object))
+mitochondrial_gene_symbols <- rownames(seurat_object)[gene_is_mitochondrial]
+mitochondrial_gene_count <- length(mitochondrial_gene_symbols)
+
+# Print a short summary with interpretation
+cat("Mitochondrial genes matched by regex:", mitochondrial_gene_count, "\n")
+cat("Expect roughly 13 for human or about 37 for mouse depending on annotation", "\n")
+
+# Warn on suspicious counts and suggest next steps
+if (mitochondrial_gene_count == 0) {
+  warning("No mitochondrial genes matched. Check feature naming or use chromosome based annotations")
+}
+if (mitochondrial_gene_count < 8 && mitochondrial_gene_count > 0) {
+  warning("Very few mitochondrial genes detected. Verify gene symbols or genome build")
+}
+if (mitochondrial_gene_count > 50) {
+  warning("Unusually many mitochondrial genes detected. Check for duplicated or misannotated features")
+}
+
+# Add percent_mt using the exact matched gene list
+seurat_object[["percent_mt"]] <- PercentageFeatureSet(
+  seurat_object,
+  features = mitochondrial_gene_symbols
+)
+```
+
+Normalize the single-cell gene expression data.
+
+```{r}
+# Normalize data, find variable features, and scale data
+seurat_object <- NormalizeData(seurat_object, verbose = FALSE)
+seurat_object <- FindVariableFeatures(seurat_object, selection.method = "vst", nfeatures = 2000, verbose = FALSE)
+seurat_object <- ScaleData(seurat_object, features = rownames(seurat_object), verbose = FALSE)
+
+# Inspect layers
+print("Inspect Seurat layers as sanity check")
+print(Layers(seurat_object))                                    
+invisible(dim(GetAssayData(seurat_object, assay = "RNA", layer = "data")))
+```
+
+Run PCA, neighbors, clustering, and UMAP.
+
+```{r}
+seurat_object <- RunPCA(seurat_object, features = VariableFeatures(seurat_object), npcs = 30, verbose = FALSE)
+seurat_object <- FindNeighbors(seurat_object, dims = 1:30, verbose = FALSE)
+seurat_object <- FindClusters(seurat_object, resolution = 0.5, verbose = FALSE)
+seurat_object <- RunUMAP(seurat_object, dims = 1:30, verbose = FALSE)
+```
+
+Plot quality control and dimensional reductions.
+
+```{r}
+print(
+  VlnPlot(
+    seurat_object,
+    features = c("nFeature_RNA", "nCount_RNA", "percent_mt"),
+    pt.size = 0.1,
+    ncol = 1
+  ) + ggtitle("Percent Mitochondrial")
+)
+```
+
+Plot UMAP cell clusters.
+
+```{r}
+print(
+  DimPlot(
+    seurat_object,
+    reduction = "umap",
+    label = TRUE
+  ) + ggtitle("UMAP of Cells Colored by Seurat Clusters")
+)
+```
+
+Make a multi-faceted UMAP plot that highlights the expression of cell-type marker genes. If a cluster shows high expression of a well-established marker gene, it suggests that the cluster is enriched for the corresponding cell type.
+
+```{r}
+# Plot feature expression for common mouse markers or fallback to variable features
+candidate_markers <- c("Gad1","Gad2","Slc17a7","Sst","Pcp4","Aqp4","Gfap","Mog","Plp1","C1qa","C1qb","Lyz2","Tyrobp","P2ry12","Reln")
+selected_features <- intersect(candidate_markers, rownames(seurat_object))
+if (length(selected_features) == 0) selected_features <- head(VariableFeatures(seurat_object), 6)
+
+print(
+  FeaturePlot(
+    seurat_object,
+    features = head(selected_features, 6),
+    ncol = 3
+  ) + ggtitle("Expression of Selected Marker Genes")
+)
+```
+
+Overall summary:
+
+```{r}
+cat("Cells:", ncol(seurat_object), "Genes:", nrow(seurat_object), "Clusters:", length(levels(Idents(seurat_object))), "\n")
+```
